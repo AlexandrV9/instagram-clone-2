@@ -1,0 +1,9 @@
+.popup__image {
+  max-width: 50vw;
+  max-height: 50vh;
+  object-fit: contain;
+}
+
+.popup__close-button {
+  
+}
