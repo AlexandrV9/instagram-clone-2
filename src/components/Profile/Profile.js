@@ -1,5 +1,4 @@
 import './Profile.css';
-import pathCar from '../../images/car.jpeg';
 
 const Profile = () => {
   return (

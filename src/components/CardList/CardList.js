@@ -13,6 +13,7 @@ const CardList = ({
         {cards.map((item) => {
           return (
             <CardItem 
+              key={item._id}
               card={item}
               onCardClick={onCardClick}
               onClose={onClose}

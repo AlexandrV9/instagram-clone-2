@@ -1,0 +1,9 @@
+.publications {
+  padding-top: 60px;
+}
+
+.publications__unordered-list {
+  padding: 0;
+  list-style-type: none;
+  margin: 0;
+}

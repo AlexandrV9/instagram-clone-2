@@ -1,5 +1,7 @@
 import './CardItem.css';
 import React from 'react';
+import { Link } from 'react-router-dom';
+import { HashLink } from 'react-router-hash-link';
 
 const CardItem = ({ 
   card, 
@@ -13,11 +15,13 @@ const CardItem = ({
 
   return (
     <li className="photo-cards__item-list">
-      <img 
-        className="photo-cards__item-image" 
-        src ={card.link} alt="Изображение"
-        onClick={handleCardClick}
-      />
+      <HashLink to = {`/publications/#${card._id}`}>
+        <img 
+          className="photo-cards__item-image" 
+          src ={card.link} alt="Изображение"
+          onClick={handleCardClick}
+        />
+      </HashLink>
     </li>
   );
 }

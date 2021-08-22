@@ -1,20 +1,63 @@
 .header {
-  padding: 10px;
-  width: 100%;
-  position: fixed;
   background: #fff;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.header__wrapper {
-  height: 100%;
-  position: relative;
-  background: #000;
+  position: fixed;
+  width: 100%;
+  z-index: 10;
 }
 
 .header__id-profile {
   margin: 0;
   font-size: 20px;
+  font-family: 'Helvetica Neue';
+  font-weight: 700;
+}
+
+.header__profile-wrapper {
+  padding: 10px;
+  height: 100%;
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.header__publications-wrapper {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items:center;
+  justify-content: center;
+  border-bottom: 1px solid rgba(190, 190, 190, 0.5);
+  padding: 10px 0 10px;
+  position: relative;
+}
+
+.header__publications-title {
+  margin: 0;
+  font-weight: 700;
+  font-size: 15px;
+}
+
+.header__publications-id-profile {
+  margin: 0;
+  font-size: 13px;
+  font-weight: 700;
+  color:rgba(95, 93, 93, 0.7);
+  text-transform: uppercase;
+  margin-bottom: 2px;
+}
+
+.header__publications-button {
+  width: 15px;
+  height: 24px;
+  padding: 0;
+  border: none;
+  background: none;
+  background-image: url('../../images/icon/icon-left-arrow.svg');
+  background-position: center center;
+  background-repeat: no-repeat;
+  position: absolute;
+  top: 50%;
+  left: 0;
+  transform: translate(10px,-50%);
 }
