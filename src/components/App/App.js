@@ -15,12 +15,10 @@ import * as Auth from '../utils/Auth';
 function App() {
 
   const [loggedIn, setloggedIn] = React.useState(false);
-
-  const [userUid, setUserUid] = React.useState('');
+  const [myUserUid, setUserUid] = React.useState('');
 
   const [isOpenPopupCreateCard, setIsOpenPopupCreateCard] = React.useState(false);
   const [cards, setCards] = React.useState([]);
-  const [users, setUsers] = React.useState([]);
 
   const history = useHistory();
 
@@ -36,7 +34,6 @@ function App() {
       console.log('Вы вышли из аккаунта');
       setCards([]);
       setloggedIn(false);
-      setUsers('');
     })
     .catch((error) => {
       console.log(error.code);
@@ -64,7 +61,7 @@ function App() {
     textDescription
   }) => {
     
-    firebase.database().ref("users/"  + userUid + '/cards/' + cards.length).set({
+    firebase.database().ref("users/"  + myUserUid + '/cards/' + cards.length).set({
       _id: cards.length,
       link,
       textLocation,
@@ -72,27 +69,23 @@ function App() {
       likes: 0,
     }).then(() => {
       setIsOpenPopupCreateCard(false);   
-      firebase.database().ref("users/"  + userUid + '/cards/' + cards.length).on('value', (elem) => { setCards([...cards, elem.val()]) })
+      firebase.database().ref("users/"  + myUserUid + '/cards/' + cards.length).on('value', (elem) => { setCards([...cards, elem.val()]) })
     });
   }
-
-
 
   return (
     <>
     <Switch>
 
       <ProtectedRoute path={`/publications/`}
-        userUid={userUid}
         loggedIn={loggedIn}
         component={Publications} 
       />
 
       <ProtectedRoute exact path="/subscribers"
-        users={users}
+        myUserUid={myUserUid}
         loggedIn={loggedIn}
         component={Subscribers}
-        userUid={userUid}
       />
 
       <Route path="/signin">
@@ -102,15 +95,17 @@ function App() {
       </Route>
 
       <ProtectedRoute path="/:id"
+        myUserUid={myUserUid}
         loggedIn={loggedIn}
         handleSignOut={handleSignOut}
         component={MyAccount}
         handleVisiblePopup = {handleVisiblePopup}
       />
 
-      <Route path="*">
-        <PageNotFound />
-      </Route>
+      <ProtectedRoute path="*"
+        component={PageNotFound}
+        loggedIn={loggedIn}
+      />
 
     </Switch>
 

@@ -8,7 +8,9 @@ const Publications = ({
 }) => {
   return (
     <>
-      <Header />
+      <Header 
+        userProfile={location.state.userProfile}
+      />
       <section className="publications">
         <ul className="publications__unordered-list">
           {location.state.cards.map((item) => {

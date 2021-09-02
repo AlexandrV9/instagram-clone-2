@@ -1,34 +1,40 @@
 import './Subscribers.css';
-import firebase from 'firebase';
 import React from 'react';
 import SubscriberItem from '../SubscriberItem/SubscriberItem';
 import Header from '../Header/Header';
+import firebase from 'firebase';
 
 const Subscribers = ({
+  myUserUid,
+  userUid,
   location,
-  userUid
-}) => {
-  // console.log(location.state.userUid); // Не работает
-  console.log(userUid);
+  // users,
+  // otherUsersUid,
+  // getOtherUser
+}) => { 
 
-  const [users, setUsers] = React.useState([]);
   const [otherUsersUid, setOtherUsersUid] = React.useState([]);
-
+  const [users, setUsers] = React.useState([]);
 
   const getOtherUser = () => {
     firebase.database().ref("users").once('value', snapshot => {
       setUsers(snapshot.val());
-      setOtherUsersUid(Object.keys(snapshot.val()).filter(item => item!==userUid));
+      setOtherUsersUid(Object.keys(snapshot.val()).filter(item => item!==myUserUid));
     });
   }
 
   React.useEffect(() => {
     getOtherUser();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   },[])
 
   return (
     <>
-      <Header />
+      <Header 
+        userUid={userUid}
+        userProfile={location.state.userProfile}
+        otherUsersUid={otherUsersUid}
+      />
       <section className="subscribers">
         <nav className='subscribers__menu' onClick={event => event.stopPropagation()}>
           <ul className="subscribers__menu-unordered-list">

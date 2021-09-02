@@ -10,12 +10,13 @@ const CardList = ({
   isOtherUser,
   userUid,
   dataOtherUser,
+  userProfile
 }) => {
 
   const history = useHistory();
 
   const handleOpenCard = (url) => {
-    history.push(url, {cards, userUid});
+    history.push(url, {cards, userUid, userProfile});
   }
 
   return (

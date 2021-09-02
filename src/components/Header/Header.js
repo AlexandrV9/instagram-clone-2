@@ -1,6 +1,7 @@
 import './Header.css';
 
 import { Link, useLocation } from 'react-router-dom';
+import { useHistory } from 'react-router';
 
 import BurgerMenu from '../BurgerMenu/BurgerMenu';
 
@@ -9,18 +10,22 @@ import pathIconPlus from '../../images/icon/icon-plus.svg';
 const Header = ({
   handleVisiblePopup,
   handleSignOut,
-  isOtherUser,
+  userProfile,
   userUid,
+  myUserUid,
 }) => {
-
+  const history = useHistory();
   const currentLocation = useLocation();
 
+  const handleBackOnPage = () => {
+    history.goBack();
+  }
+
   function constructorHeader(){
-    if(currentLocation.pathname === '/'){
-      if(isOtherUser === userUid){
-      return (
+    if(currentLocation.pathname === `/${myUserUid}`){ 
+      return (  
         <div className="header__profile-wrapper">
-          <p className="header__id-profile">info.3.7.9</p>
+          <p className="header__id-profile">{userProfile._id}</p>
           <div className="header__button-wrapper" onClick={event => event.stopPropagation()}>
              <button className="button header__button-add-card" onClick={handleVisiblePopup}>
               <img className="header__icon-add-card" src={pathIconPlus} alt="Икнока добавления"/>
@@ -28,27 +33,25 @@ const Header = ({
             <BurgerMenu 
               handleSignOut={handleSignOut}
             />
-          </div>  
+          </div>    
         </div>
-      )
-      } else {
-        return (
-          <div className="header__publications-wrapper">
-            <p className="header__subscribers-id-profile">info.3.7.9</p>
-            <Link to="/subscribers">
-              <button className="header__publications-button"></button>
-            </Link>
-          </div>
-        )
-      }
-          
-      }
+      ) 
+    } else if(currentLocation.pathname === userUid) {
+      return (
+        <div className="header__publications-wrapper">
+          <p className="header__subscribers-id-profile">{userProfile._id}</p>
+          <Link to="/">
+            <button className="header__publications-button" onClick={handleBackOnPage}></button>
+          </Link>
+        </div>
+      );
+    }
     else if(currentLocation.pathname === '/subscribers'){
       return (
         <div className="header__publications-wrapper">
-          <p className="header__subscribers-id-profile">info.3.7.9</p>
+          <p className="header__subscribers-id-profile">Подписчики</p>
           <Link to="/">
-            <button className="header__publications-button"></button>
+            <button className="header__publications-button" onClick={handleBackOnPage}></button>
           </Link>
         </div>
       )
@@ -56,11 +59,9 @@ const Header = ({
     else {
       return (
         <div className="header__publications-wrapper">
-          <p className="header__publications-id-profile">info.3.7.9</p>
+          <p className="header__publications-id-profile">{userProfile._id}</p>
           <h1 className="header__publications-title">Публикации</h1>
-          <Link to="/subscribers">
-            <button className="header__publications-button"></button>
-          </Link>
+          <button className="header__publications-button" onClick={handleBackOnPage}></button>
         </div>
       )
     }

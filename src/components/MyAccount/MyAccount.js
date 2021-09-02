@@ -11,6 +11,7 @@ const MyAccount = ({
   handleSignOut,
   loggedIn,
   location,
+  myUserUid,
 }) => {
 
   const [cards, setCards] = React.useState([]);
@@ -28,11 +29,14 @@ const MyAccount = ({
   React.useEffect(() => {
     getInitialCard();
     getUserProfile();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   },[]);
 
   return (
         <>
           <Header 
+            myUserUid={myUserUid}
+            userUid={userUid}
             userProfile={userProfile}
             handleVisiblePopup={handleVisiblePopup}
             handleSignOut={handleSignOut}
@@ -43,6 +47,7 @@ const MyAccount = ({
           />
           <CardList 
             userUid={userUid}
+            userProfile={userProfile}
             loggedIn={loggedIn}
             cards={cards}
             onCardClick={onCardClick}

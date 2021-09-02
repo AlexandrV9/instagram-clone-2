@@ -3,14 +3,12 @@ import { useHistory } from 'react-router';
 
 const Profile = ({
   userProfile,
-  userUid,
 }) => {
 
   const history = useHistory();
 
   const handleTransitionOnSubscribers = () => {
-    console.log(userUid);
-    history.push(`/subscribers`,{ userUid });
+    history.push('/subscribers', { userProfile });
   }
 
   return (
@@ -25,22 +23,16 @@ const Profile = ({
           <nav>
             <ul className="profile__unordered-list">
               <li className="profile__item-list">
-                <a href="#1" className="profile__item-link">
-                  <h2 className="profile__item-number">16</h2>
-                  <p className="profile__item-subtitle">Публикации</p>
-                </a>
+                <h2 className="profile__item-number">16</h2>
+                <p className="profile__item-subtitle">Публикации</p>
+              </li>
+              <li className="profile__item-list" onClick={handleTransitionOnSubscribers}>
+                <h2 className="profile__item-number">102</h2>
+                <p className="profile__item-subtitle">Подписчики</p>
               </li>
               <li className="profile__item-list">
-                <a href="#1" className="profile__item-link" onClick={handleTransitionOnSubscribers}>
-                  <h2 className="profile__item-number">102</h2>
-                  <p className="profile__item-subtitle">Подписчики</p>
-                </a>
-              </li>
-              <li className="profile__item-list">
-                <a href="#2" className="profile__item-link">
-                  <h2 className="profile__item-number">237</h2>
-                  <p className="profile__item-subtitle">Подписки</p>
-                </a>
+                <h2 className="profile__item-number">237</h2>
+                <p className="profile__item-subtitle">Подписки</p>
               </li>
             </ul>
           </nav>
