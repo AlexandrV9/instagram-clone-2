@@ -61,6 +61,9 @@
 
 .publications__wrapper-bottom {
   padding: 10px;
+}
+
+.publications__wrapper-button {
   display: flex;
   justify-content: space-between;
   align-items:center;
@@ -72,4 +75,10 @@
 
 .publications__button:last-of-type {
   margin-right: 0;
+}
+
+.publications__likes {
+  margin: 10px 0 0;
+  font-size: 700;
+  font-size: 13px;
 }

@@ -8,53 +8,27 @@ import pathClockIcon from '../../images/icon/icon-clock.svg';
 import pathListIcon from '../../images/icon/icon-list.svg';
 import pathQrCodeIcon from '../../images/icon/icon-qr-code.svg';
 import pathSaveIcon from '../../images/icon/icon-save.svg';
+import pathIconMenu from '../../images/icon/icon-menu.svg';
 
-const BurgerMenu = () => {
+const BurgerMenu = ({
+  handleSignOut
+}) => {
 
-  const [buttonBurger, setButtonBurger] = React.useState(false);
-
-  // function handleClosePopupByOverlay(popup){ 
-  //     return (event) => { 
-  //       if (event.target === event.currentTarget) { 
-          
-  //       }; 
-  //     } 
-  //   } 
-
-  const handleButtonBurgerClick = (event) => {
-
-    console.log(event);
-
-    if(event.target.classList.contains('navigation__burger')) {
-      if(buttonBurger){
-        setButtonBurger(false);
-      }
-      else {
-        setButtonBurger(true);
-      }
-      return document.body.classList.toggle('page_lock');
-    }
-    if(event.target.classList.contains('navigation__burger-span')){
-      if(buttonBurger){
-        setButtonBurger(false);
-      }
-      else {
-        setButtonBurger(true);
-      }
-      return document.body.classList.toggle('page_lock');
-    }
+  const [isVisible, setVisible] = React.useState(false);
+  
+  const handleButtonSignOut = () => {
+    handleSignOut();
   }
 
   return (
-    <div className={`navigation__navbar-wrapper ${buttonBurger ? 'navigation__navbar-wrapper_active' : ''}`}>
-  
-      <div className={`navigation__burger ${buttonBurger ? 'navigation__burger_active' : ''}`} onClick={handleButtonBurgerClick}>
-        <span className={`navigation__burger-span ${buttonBurger ? 'navigation__burger-span_active' : ''}`}></span>
-      </div>
+    <>
+      <button className='navigation__button-burger' onClick={()=>setVisible(true)}>
+        <img className="navigation__burger-image" alt="Иконка меню" src={pathIconMenu}/>
+      </button>
         
-      <div className={`navigation__navbar ${buttonBurger ? 'navigation__navbar_active' : ''}`}>
+      <div className={`navigation__navbar ${isVisible ? 'navigation__navbar_active' : ''}`} onClick={() => setVisible(false)}>
   
-        <nav className={`navigation__menu ${buttonBurger ? 'navigation__menu_active' : ''}`}>
+        <nav className={`navigation__menu ${isVisible ? 'navigation__menu_active' : ''}`} onClick={event => event.stopPropagation()}>
           <ul className="navigation__menu-unordered-list">
             <li className="navigation__menu-list-item">
               <img src={pathGearIcon} className="navigation__menu-icon-item" alt="Иконка шестерёнки"/>
@@ -85,9 +59,10 @@ const BurgerMenu = () => {
               <a href="#3" className="navigation__menu-link-item">Центр информации о COVID-19</a>
             </li>
           </ul>
+          <button className="navigation__menu-button-signnout" onClick={handleButtonSignOut}>Выйти из аккаунта</button>
         </nav>
       </div>
-    </div>
+    </>
   );
 }
 

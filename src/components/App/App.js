@@ -1,87 +1,126 @@
-import './App.css';
-
+import './App.css'
 import React from 'react';
-import { Route, Switch } from 'react-router';
-
+import { Route, Switch, useHistory } from 'react-router';
 import MyAccount from '../MyAccount/MyAccount';
-import ImagePopup from '../ImagePopup/ImagePopup';
 import Publications from '../Publications/Publications';
+import firebase from 'firebase';
+import PopupCreateCard from '../PopupCreateCard/PopupCreateCard';
+import Login from '../Login/Login';
+import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
+import PageNotFound from '../PageNotFound/PageNotFound';
+import Subscribers from '../Subscribers/Subscribers';
+
+import * as Auth from '../utils/Auth';
 
 function App() {
 
-  const [cards, setCards] = React.useState([
-    {link: 'https://images.unsplash.com/photo-1471479917193-f00955256257?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=2896&q=80',
-      _id: '1' 
-    },
-    {link: 'https://images.unsplash.com/photo-1502489597346-dad15683d4c2?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=967&q=80',
-    _id: '2'  
-    },
-    {link: 'https://images.unsplash.com/photo-1606220838315-056192d5e927?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=800&q=80 ',
-    _id: '3' 
-    },
-    {link: 'https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=750&q=80',
-    _id: '4'  
-    },
-    {link: 'https://images.unsplash.com/photo-1493238792000-8113da705763?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=750&q=80',
-    _id: '5'  
-    },
-    {link: 'https://images.unsplash.com/photo-1511919884226-fd3cad34687c?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=750&q=80 ',
-    _id: '6' 
-    },
-    {link: 'https://images.unsplash.com/photo-1494905998402-395d579af36f?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=750&q=80',
-    _id: '7'  
-    },
-    {link: 'https://images.unsplash.com/photo-1541443131876-44b03de101c5?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=750&q=80',
-    _id: '8'  
-    },
-    {link: 'https://images.unsplash.com/photo-1555626906-fcf10d6851b4?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=750&q=80 ',
-    _id: '9' 
-    },
-    {link: 'https://images.unsplash.com/photo-1504215680853-026ed2a45def?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=334&q=80',
-    _id: '10'  
-    },
-    {link: 'https://images.unsplash.com/photo-1490641815614-b45106d6dd04?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=750&q=80',
-    _id: '11'  
-    },
-    {link: 'https://images.unsplash.com/photo-1503736334956-4c8f8e92946d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=667&q=80 ',
-    _id: '12' 
-    }
-  ]);
+  const [loggedIn, setloggedIn] = React.useState(false);
 
-  const [selectedCard, setSelectedCard] = React.useState({});
+  const [userUid, setUserUid] = React.useState('');
 
-  const handleCardClick = (card) => {
-    setSelectedCard(card);
+  const [isOpenPopupCreateCard, setIsOpenPopupCreateCard] = React.useState(false);
+  const [cards, setCards] = React.useState([]);
+  const [users, setUsers] = React.useState([]);
+
+  const history = useHistory();
+
+  const handleVisiblePopup = () => {
+    document.body.classList.toggle('page_lock');
+    setIsOpenPopupCreateCard(!isOpenPopupCreateCard);
   }
 
-  // const handleCloseAllPopups = () => {
-  //   setSelectedCard(false);
-  // }
+  const handleSignOut = () => {
+    Auth
+    .signOut()
+    .then(() => {
+      console.log('Вы вышли из аккаунта');
+      setCards([]);
+      setloggedIn(false);
+      setUsers('');
+    })
+    .catch((error) => {
+      console.log(error.code);
+      console.log(error.message);
+    })
+  }
 
-  // const handleCloseMenuByOverlay =(event) => {
-  //   console.log(event);
-  // }
+  const handleLogin = ({email, password}) => {
+    Auth
+    .login({email, password})
+    .then((userCredential) => {
+      console.log('Вы вошли в систему!')
+      setUserUid(userCredential.user.uid);
+      setloggedIn(true);
+      history.push(`/${userCredential.user.uid}`);
+    }).catch(function(error) {
+      console.log(error.code);
+      console.log(error.message);
+   });
+  }
+
+  const handleAddCard = ({
+    link,
+    textLocation,
+    textDescription
+  }) => {
+    
+    firebase.database().ref("users/"  + userUid + '/cards/' + cards.length).set({
+      _id: cards.length,
+      link,
+      textLocation,
+      textDescription,  
+      likes: 0,
+    }).then(() => {
+      setIsOpenPopupCreateCard(false);   
+      firebase.database().ref("users/"  + userUid + '/cards/' + cards.length).on('value', (elem) => { setCards([...cards, elem.val()]) })
+    });
+  }
+
+
 
   return (
+    <>
     <Switch>
 
-      <Route exact path="/">
-        <MyAccount 
-          cards={cards}
-          onCardClick={handleCardClick}
+      <ProtectedRoute path={`/publications/`}
+        userUid={userUid}
+        loggedIn={loggedIn}
+        component={Publications} 
+      />
+
+      <ProtectedRoute exact path="/subscribers"
+        users={users}
+        loggedIn={loggedIn}
+        component={Subscribers}
+        userUid={userUid}
+      />
+
+      <Route path="/signin">
+        <Login
+          onLogin={handleLogin}
         />
       </Route>
 
-      <Route path="/publications">
-        <Publications 
-          cards={cards}     
-        />
+      <ProtectedRoute path="/:id"
+        loggedIn={loggedIn}
+        handleSignOut={handleSignOut}
+        component={MyAccount}
+        handleVisiblePopup = {handleVisiblePopup}
+      />
+
+      <Route path="*">
+        <PageNotFound />
       </Route>
 
     </Switch>
 
+    <PopupCreateCard
+      handleVisiblePopup = {handleVisiblePopup}
+      isOpenPopupCreateCard ={isOpenPopupCreateCard}
+      onAddCard={handleAddCard}
+    />
+    </>
     // {/* <div>Автор иконок: <a href="https://www.freepik.com" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/ru/" title="Flaticon">www.flaticon.com</a></div> */}
-    
 
   );
 }

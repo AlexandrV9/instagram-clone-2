@@ -12,16 +12,6 @@
   margin: 0;
 }
 
-.profile__wrapper-image {
-  min-width: 80px;
-  height: 80px;
-  border-radius: 50%;
-  background-repeat: no-repeat;
-  background-image: url('../../images/car.jpeg');
-  background-position: center center;
-  background-size: cover;
-}
-
 .profile__name {
   margin: 0 0 5px;
   font-size: 16px;
@@ -75,6 +65,13 @@
 
 .profile__info-about-me {
   margin-bottom: 20px;
+}
+
+.profile__avatar {
+  border-radius: 50%;
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
 }
 
 .profile__button-edit {

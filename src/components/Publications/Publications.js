@@ -1,33 +1,28 @@
 import './Publications.css';
-
 import Header from '../Header/Header';
-import PublicationsItem from '../Publications-item/PublicationsItem';
+import React from 'react';
+import PublicationsItem from '../PublicationsItem/PublicationsItem';
 
 const Publications = ({
-  cards,
+  location,
 }) => {
   return (
     <>
       <Header />
-
       <section className="publications">
         <ul className="publications__unordered-list">
-          {cards.map((item) => {
+          {location.state.cards.map((item) => {
             return (
               <PublicationsItem
+                userUid={location.state.userUid}  
                 key={item._id}
                 card={item}
               />
             ) 
           })}
-
         </ul>
-
       </section>
-
     </>
-    
-    
   );
 }
 

@@ -1,45 +1,42 @@
 import './CardList.css'
 import CardItem from '../CardItem/CardItem';
-import pathImageItem from '../../images/car2.jpeg';
+import { useHistory } from 'react-router';
 
 const CardList = ({
   cards,
   onCardClick,
   onClose,
+  loggedIn,
+  isOtherUser,
+  userUid,
+  dataOtherUser,
 }) => {
+
+  const history = useHistory();
+
+  const handleOpenCard = (url) => {
+    history.push(url, {cards, userUid});
+  }
+
   return (
-    <section className="photo-cards">
-      <ul className="photo-cards__unordered-list">
-        {cards.map((item) => {
-          return (
+    loggedIn && (
+      <section className="photo-cards">
+        <ul className="photo-cards__unordered-list">
+          {cards.map((item) => 
             <CardItem 
               key={item._id}
               card={item}
               onCardClick={onCardClick}
               onClose={onClose}
-            />
-          ) 
-        })}
-        
-        {/* <CardItem pathImageItem={pathImageItem} />
-        <CardItem pathImageItem={pathImageItem} /> */}
-        {/* <CardItem pathImageItem={pathImageItem} />
-        <CardItem pathImageItem={pathImageItem} />
-        <CardItem pathImageItem={pathImageItem} />
-        <CardItem pathImageItem={pathImageItem} />
-        <CardItem pathImageItem={pathImageItem} />
-        <CardItem pathImageItem={pathImageItem} />
-        <CardItem pathImageItem={pathImageItem} />
-        <CardItem pathImageItem={pathImageItem} />
-        <CardItem pathImageItem={pathImageItem} />
-        <CardItem pathImageItem={pathImageItem} />
-        <CardItem pathImageItem={pathImageItem} />
-        <CardItem pathImageItem={pathImageItem} />
-        <CardItem pathImageItem={pathImageItem} />
-        <CardItem pathImageItem={pathImageItem} />
-        <CardItem pathImageItem={pathImageItem} /> */}
-      </ul>
-    </section>
+              isOtherUser={isOtherUser}
+              userUid={userUid}
+              dataOtherUser={dataOtherUser}
+              onOpenCard={handleOpenCard}
+            /> 
+          )}
+        </ul>
+      </section>
+    )
   );
 }
 

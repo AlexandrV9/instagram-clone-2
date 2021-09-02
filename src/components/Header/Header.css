@@ -61,3 +61,26 @@
   left: 0;
   transform: translate(10px,-50%);
 }
+
+.header__button-add-card {
+  display: flex;
+  justify-content: center;
+  align-items:center;
+  padding: 0;
+  margin: 0 15px 0 0;
+  border: none;
+}
+
+.header__icon-add-card {
+  width: 25px;
+  height: 25px;
+}
+
+.header__button-wrapper {
+  display: flex;
+  justify-content: space-between;
+}
+
+.header__subscribers-id-profile {
+  margin: 0;
+}
