@@ -1,9 +1,0 @@
-import './Loader.css';
-
-const Loader = () => {
-  return (
-    <div class="loader" />
-  );
-}
-
-export default Loader;

@@ -1,10 +1,16 @@
 import React from "react";
+import { useSelector, useDispatch } from "react-redux";
 
 import Profile from "./Profile/Profile";
 import CardList from "./CardList/CardList";
 import Header from "../../common/Header/Header";
 import PopupCreateCard from "./PopupCreateCard/PopupCreateCard";
 import * as api from '../../utils/api';
+import { 
+  addInitialCards, 
+  addNewCard
+ } from '../../../features/cards/cardsSlice';
+import Preloader from "../../common/Preloader/Preloader";
 
 const MyAccount = ({
   onCardClick,
@@ -12,21 +18,23 @@ const MyAccount = ({
   handleSignOut,
   location,
   myUserUid,
+  isActivePreloader,
+  setIsActivePreloader
 }) => {
 
+  const cards =  useSelector((state) => state.cards.value);
+  const dispatch = useDispatch();
+
   const [userProfile, setUserProfile] = React.useState([]);
-  const [cards, setCards] = React.useState([]);
   const [isOpenPopupCreateCard, setIsOpenPopupCreateCard] = React.useState(false);
   const userUid = location.pathname;
 
-  const handleGetUserProfile = async (userUid) => {
+  const handleGetUserData = async (userUid) => {
+    setIsActivePreloader(true);
     const userProfile = await api.getUserProfile(userUid);
-    await setUserProfile(userProfile);
-  }
-
-  const handleGetAllCards = async (userUid) => {
-    const allCards = await api.getAllCards(userUid);
-    await setCards(allCards);
+    setUserProfile(userProfile);
+    dispatch(addInitialCards(userProfile.cards));
+    setIsActivePreloader(false);
   }
 
   const handleVisiblePopup = () => {
@@ -46,37 +54,46 @@ const MyAccount = ({
       cards,
       myUserUid,
     });
-    await setCards([...cards, newCard]);
-    await setIsOpenPopupCreateCard(false);  
+    dispatch(addNewCard(newCard));
+    setIsOpenPopupCreateCard(false);  
   }
 
   React.useEffect(() => {
-    handleGetUserProfile(userUid);
-    handleGetAllCards(userUid);
+    handleGetUserData(userUid);
   // eslint-disable-next-line react-hooks/exhaustive-deps
   },[]);
 
   return (
         <>
-          <Header 
-            myUserUid={myUserUid}
-            userUid={userUid}
-            userProfile={userProfile}
-            handleVisiblePopup={handleVisiblePopup}
-            handleSignOut={handleSignOut}
-          />
-          <Profile 
-            userUid={userUid}
-            userProfile={userProfile}
-          />
-          <CardList 
-            myUserUid={myUserUid}
-            userUid={userUid}
-            userProfile={userProfile}
-            cards={cards}
-            onCardClick={onCardClick}
-            onClose={onClose}
-          />
+          
+          {
+            isActivePreloader ? 
+
+            <Preloader />
+            :
+            <>
+              <Header 
+                myUserUid={myUserUid}
+                userUid={userUid}
+                userProfile={userProfile}
+                handleVisiblePopup={handleVisiblePopup}
+                handleSignOut={handleSignOut}
+              />
+              <Profile 
+                userUid={userUid}
+                userProfile={userProfile}
+              />
+              <CardList 
+                myUserUid={myUserUid}
+                userUid={userUid}
+                userProfile={userProfile}
+                onCardClick={onCardClick}
+                onClose={onClose}
+              />
+            </>
+            
+          }
+          
           <PopupCreateCard
             handleVisiblePopup = {handleVisiblePopup}
             isOpenPopupCreateCard ={isOpenPopupCreateCard}

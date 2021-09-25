@@ -1,28 +1,26 @@
 import { useHistory } from 'react-router';
+import { useSelector } from "react-redux";
 
 import CardItem from './CardItem/CardItem';
-import Loader from '../../../common/Loader/Loader';
 import './CardList.css'
 
 const CardList = ({
-  cards,
   onCardClick,
   onClose,
   isOtherUser,
   userUid,
-  myUserUid,
   dataOtherUser,
   userProfile
 }) => {
 
   const history = useHistory();
+  const cards =  useSelector((state) => state.cards.value);
 
   const handleOpenCard = (url) => {
     history.push(url, {cards, userUid, userProfile});
   }
 
   return (
-    myUserUid ? (
       <section className="photo-cards">
         <ul className="photo-cards__unordered-list">
           {cards.map((item) => 
@@ -39,9 +37,7 @@ const CardList = ({
           )}
         </ul>
       </section>
-    )
-    :
-    <Loader />
+    
   );
 }
 

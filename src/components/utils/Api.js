@@ -52,15 +52,6 @@ const addCard = ({
   });
 }
 
-const getAllCards = (userUid) => {
-  return firebase
-  .database()
-  .ref(`users${userUid}/cards`)
-  .once('value')
-  .then(snapshot => snapshot.val())
-  .catch(showError);
-}
-
 const getUserProfile = (userUid) => {
   return firebase
   .database()
@@ -93,7 +84,6 @@ export {
   signOut,
   login,
   addCard,
-  getAllCards,
   getUserProfile,
   getOtherUser,
   updateNumberOfLikes,

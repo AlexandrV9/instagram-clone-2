@@ -16,17 +16,33 @@ function App() {
   const history = useHistory();
 
   const [myUserUid, setMyUserUid] = React.useState('');
+  const [isActivePreloader, setIsActivePreloader ] = React.useState(false);
 
   const handleLogin = async ({ email, password }) => {
     const userId = await api.login({ email, password });
     await setMyUserUid(userId);
     await history.push(`/${userId}`);
+    setIsActivePreloader(true);
+    localStorage.setItem('userId', userId);
+  }
+
+  const handleCheckUserId = () => {
+    const userId = localStorage.getItem('userId');
+    if(userId!== '' && userId!== null) {
+      setMyUserUid(userId);
+      history.push(`/${userId}`);
+    }
   }
 
   const handleSignOut = async () => {
     api.signOut();
     setMyUserUid('');  
+    localStorage.removeItem('userId');
   }
+
+  React.useEffect(() => {
+    handleCheckUserId();
+  },[])
 
   return (
     <>
@@ -49,6 +65,8 @@ function App() {
         </Route>
 
         <ProtectedRoute path="/:id"
+          isActivePreloader={isActivePreloader}
+          setIsActivePreloader={setIsActivePreloader}
           myUserUid={myUserUid}
           handleSignOut={handleSignOut}
           component={MyAccount}
