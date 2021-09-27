@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 import './PublicationsItem.css';
 import pathIconDots from '../../../../images/icon/icon-three-dots.svg';
@@ -7,13 +8,14 @@ import pathLikeIcon from '../../../../images/icon/icon-like.svg';
 import pathCommentIcon from '../../../../images/icon/icon-message.svg';
 import pathPaperPlaneIcon from '../../../../images/icon/icon-paper-plane.svg';
 import pathNotesIcon from '../../../../images/icon/icon-save.svg';
-import * as api from '../../../utils/api';
+import * as api from '../../../../utils/api';
 
 const PublicationsItem = ({
   card,
   userUid,
-  userProfile,
 }) => {
+
+  const user = useSelector((state) => state.user.value);
 
   const [likes, setLikes] = React.useState(card.likes);
 
@@ -28,10 +30,10 @@ const PublicationsItem = ({
       
       <div className="publications__wrapper-top">
         <div className="publications__wrapper-image">
-          <Link to = "/"><img className="publications__avatar-image" src={userProfile.avatar} alt="Изображение аватара" /></Link>
+          <Link to = "/"><img className="publications__avatar-image" src={user.avatar} alt="Изображение аватара" /></Link>
         </div>
         <div className="publications__wrapper-text">
-          <p className="publications__id-profile">{userProfile._id}</p>
+          <p className="publications__id-profile">{user._id}</p>
           <a href="#11"className="publications__link-location">33 водопада</a>
         </div>
 

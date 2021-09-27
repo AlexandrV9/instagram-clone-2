@@ -1,23 +1,19 @@
 import { useHistory } from 'react-router';
+import { useSelector } from 'react-redux';
 
 import './Profile.css';
 
-const Profile = ({
-  userProfile,
-}) => {
-
+const Profile = () => {
+  
+  const user = useSelector((state) => state.user.value);
   const history = useHistory();
-
-  const handleTransitionOnSubscribers = () => {
-    history.push('/subscribers', { userProfile });
-  }
 
   return (
     <section className="profile">
       <div className="profile__wrapper">
         
         <div className="profile__wrapper-image">
-          <img className="profile__avatar" src={userProfile.avatar} alt="аватар пользователя"/>
+          <img className="profile__avatar" src={user.avatar} alt="аватар пользователя"/>
         </div>
 
         <div className="profile__publications-followers-subscriptions">
@@ -27,7 +23,7 @@ const Profile = ({
                 <h2 className="profile__item-number">16</h2>
                 <p className="profile__item-subtitle">Публикации</p>
               </li>
-              <li className="profile__item-list" onClick={handleTransitionOnSubscribers}>
+              <li className="profile__item-list" onClick={() => history.push('/subscribers')}>
                 <h2 className="profile__item-number">102</h2>
                 <p className="profile__item-subtitle">Подписчики</p>
               </li>
@@ -41,11 +37,11 @@ const Profile = ({
       </div>
 
       <div className="profile__info-about-me">
-        <h1 className="profile__name">{userProfile.name}</h1>
+        <h1 className="profile__name">{user.name}</h1>
         <p className="profile__signature">Moscow</p>
       </div>
 
-      <button className="button profile__button-edit">Редактировать профиль </button>
+      <button className="button profile__button-edit">Редактировать профиль</button>
       
     </section>
   );

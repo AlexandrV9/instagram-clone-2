@@ -3,21 +3,20 @@ import React from 'react';
 import './Subscribers.css';
 import SubscriberItem from './SubscriberItem/SubscriberItem';
 import Header from '../../common/Header/Header';
-import * as api from '../../utils/api';
+import * as api from '../../../utils/api';
 
 const Subscribers = ({
   myUserUid,
   userUid,
-  location,
 }) => { 
 
   const [otherUsersUid, setOtherUsersUid] = React.useState([]);
   const [users, setUsers] = React.useState([]);
 
   const handleGetOtherUser = async (myUserUid) => {
-    const allOtherUsers = await api.getOtherUser();
-    await setUsers(allOtherUsers);
-    await setOtherUsersUid(Object.keys(allOtherUsers).filter(item => item!==myUserUid));
+    const allUsers = await api.getOtherUser();
+    await setUsers(allUsers);
+    await setOtherUsersUid(Object.keys(allUsers).filter(item => item!==myUserUid));
   }
 
   React.useEffect(() => {
@@ -29,7 +28,6 @@ const Subscribers = ({
     <>
       <Header 
         userUid={userUid}
-        userProfile={location.state.userProfile}
         otherUsersUid={otherUsersUid}
       />
       <section className="subscribers">

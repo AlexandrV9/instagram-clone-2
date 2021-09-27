@@ -1,4 +1,5 @@
 .header {
+  max-width: 375px;
   background: #fff;
   position: fixed;
   width: 100%;

@@ -1,14 +1,17 @@
 import React from 'react';
+import { useHistory } from 'react-router';
 
 import './CardItem.css';
 
 const CardItem = ({ 
   card, 
-  onOpenCard
+  userUid,
 }) => {
 
+  const history = useHistory();
+
   const handleOpenImage = () => {
-    onOpenCard(`/publications/#${card._id}`)
+    history.push(`/publications/#${card._id}`, { userUid });
   }
 
   return (

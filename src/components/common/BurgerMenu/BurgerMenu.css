@@ -119,7 +119,14 @@
     height: 25px;
   }
 
-  .navigation__menu-button-signnout {
-    border: none;
+  .navigation__menu-button-signout {
     background: none;
+    font-weight: 500;
+    font-size: 13px;
+    line-height: 16px;
+    border-radius: 5px;
+    border: 1px solid rgba(190, 190, 190, 0.5);
+    width: 100%;
+    padding: 5px;
+    text-align: center;
   }

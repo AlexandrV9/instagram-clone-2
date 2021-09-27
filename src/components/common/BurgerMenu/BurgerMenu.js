@@ -16,17 +16,22 @@ const BurgerMenu = ({
 
   const [isVisible, setVisible] = React.useState(false);
   
+  const handleVisibleMenu = () => {
+    setVisible(!isVisible);
+    document.body.classList.toggle('page_lock');
+
+  }
   const handleButtonSignOut = () => {
     handleSignOut();
   }
 
   return (
     <>
-      <button className='navigation__button-burger' onClick={()=>setVisible(true)}>
+      <button className='navigation__button-burger' onClick={handleVisibleMenu}>
         <img className="navigation__burger-image" alt="Иконка меню" src={pathIconMenu}/>
       </button>
         
-      <div className={`navigation__navbar ${isVisible ? 'navigation__navbar_active' : ''}`} onClick={() => setVisible(false)}>
+      <div className={`navigation__navbar ${isVisible ? 'navigation__navbar_active' : ''}`} onClick={handleVisibleMenu}>
   
         <nav className={`navigation__menu ${isVisible ? 'navigation__menu_active' : ''}`} onClick={event => event.stopPropagation()}>
           <ul className="navigation__menu-unordered-list">
@@ -59,7 +64,7 @@ const BurgerMenu = ({
               <a href="#3" className="navigation__menu-link-item">Центр информации о COVID-19</a>
             </li>
           </ul>
-          <button className="navigation__menu-button-signnout" onClick={handleButtonSignOut}>Выйти из аккаунта</button>
+          <button className="navigation__menu-button-signout" onClick={handleButtonSignOut}>Выйти из аккаунта</button>
         </nav>
       </div>
     </>

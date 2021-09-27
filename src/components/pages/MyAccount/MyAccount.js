@@ -1,39 +1,44 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
+import { useHistory } from "react-router";
 
 import Profile from "./Profile/Profile";
 import CardList from "./CardList/CardList";
 import Header from "../../common/Header/Header";
 import PopupCreateCard from "./PopupCreateCard/PopupCreateCard";
-import * as api from '../../utils/api';
+import * as api from '../../../utils/api';
+
 import { 
   addInitialCards, 
   addNewCard
- } from '../../../features/cards/cardsSlice';
+} from '../../../features/cards/cardsSlice';
+
+import { 
+  addDataUser,
+} from '../../../features/user/userSlice';
+
 import Preloader from "../../common/Preloader/Preloader";
 
 const MyAccount = ({
-  onCardClick,
-  onClose,
   handleSignOut,
-  location,
   myUserUid,
   isActivePreloader,
   setIsActivePreloader
 }) => {
 
+  const history = useHistory();
+  const userUid = history.location.pathname;
   const cards =  useSelector((state) => state.cards.value);
+  
   const dispatch = useDispatch();
 
-  const [userProfile, setUserProfile] = React.useState([]);
   const [isOpenPopupCreateCard, setIsOpenPopupCreateCard] = React.useState(false);
-  const userUid = location.pathname;
 
   const handleGetUserData = async (userUid) => {
     setIsActivePreloader(true);
-    const userProfile = await api.getUserProfile(userUid);
-    setUserProfile(userProfile);
-    dispatch(addInitialCards(userProfile.cards));
+    const dataUser = await api.getUserProfile(userUid);
+    dispatch(addDataUser(dataUser))
+    dispatch(addInitialCards(dataUser.cards));
     setIsActivePreloader(false);
   }
 
@@ -75,20 +80,14 @@ const MyAccount = ({
               <Header 
                 myUserUid={myUserUid}
                 userUid={userUid}
-                userProfile={userProfile}
                 handleVisiblePopup={handleVisiblePopup}
                 handleSignOut={handleSignOut}
               />
               <Profile 
                 userUid={userUid}
-                userProfile={userProfile}
               />
               <CardList 
-                myUserUid={myUserUid}
                 userUid={userUid}
-                userProfile={userProfile}
-                onCardClick={onCardClick}
-                onClose={onClose}
               />
             </>
             

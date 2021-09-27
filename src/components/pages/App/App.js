@@ -1,6 +1,5 @@
 import React from 'react';
 import { Route, Switch, useHistory } from 'react-router';
-
 import './App.css'
 
 import MyAccount from '../MyAccount/MyAccount';
@@ -9,7 +8,7 @@ import Login from '../../pages/Login/Login';
 import ProtectedRoute from '../../ProtectedRoute/ProtectedRoute';
 import PageNotFound from '../../pages/PageNotFound/PageNotFound';
 import Subscribers from '../Subscribers/Subscribers';
-import * as api from '../../utils/api';
+import * as api from '../../../utils/api';
 
 function App() {
 
@@ -42,6 +41,7 @@ function App() {
 
   React.useEffect(() => {
     handleCheckUserId();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   },[])
 
   return (

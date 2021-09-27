@@ -5,15 +5,11 @@ const SubscriberItem = ({
   userData,
   uid,
 }) => {
-  
+
   const history = useHistory();
 
-  const handleTransitionAnotherProfile = () => {
-    history.push(`/${uid}`) 
-  }
-
   return (
-    <li className="subscriber__menu-list-item" onClick={handleTransitionAnotherProfile}>
+    <li className="subscriber__menu-list-item" onClick={() => history.push(`/${uid}`)}>
       <div className="subscriber__menu-icon-item">
         <img className="subscriber__user-avatar" alt="Аватар" src={userData.avatar}/>
       </div>
