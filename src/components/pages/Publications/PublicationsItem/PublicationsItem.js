@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 
 import './PublicationsItem.css';
 import pathIconDots from '../../../../images/icon/icon-three-dots.svg';
@@ -10,19 +10,23 @@ import pathPaperPlaneIcon from '../../../../images/icon/icon-paper-plane.svg';
 import pathNotesIcon from '../../../../images/icon/icon-save.svg';
 import * as api from '../../../../utils/api';
 
+import { 
+  updateCard,
+} from '../../../../features/currenUser/currentUserSlice';
+
 const PublicationsItem = ({
   card,
 }) => {
 
-  const [likes, setLikes] = React.useState(card.likes);
+  const dispatch = useDispatch();
 
   const userId = useSelector((state) => state.currentUser.value).userId;
   const user = useSelector((state) => state.currentUser.value);
 
-
   const handleLikeCard = async (card) => {
-    await api.updateNumberOfLikes(card, userId, likes+1 );
-    setLikes(likes+1);
+    await api.updateNumberOfLikes(card, userId, card.likes+1 );
+    dispatch(updateCard(card));
+    
   }
 
   return (
@@ -65,7 +69,7 @@ const PublicationsItem = ({
           </button>
 
         </div>
-        <p className="publications__likes">Нравится <span className="publications__likes-number">{likes}</span></p>
+        <p className="publications__likes">Нравится <span className="publications__likes-number">{card.likes}</span></p>
       </div>
     </li>
   );
