@@ -6,39 +6,37 @@ import Profile from "./Profile/Profile";
 import CardList from "./CardList/CardList";
 import Header from "../../common/Header/Header";
 import PopupCreateCard from "./PopupCreateCard/PopupCreateCard";
+import Preloader from "../../common/Preloader/Preloader";
 import * as api from '../../../utils/api';
 
 import { 
-  addInitialCards, 
-  addNewCard
-} from '../../../features/cards/cardsSlice';
-
-import { 
-  addDataUser,
-} from '../../../features/user/userSlice';
-
-import Preloader from "../../common/Preloader/Preloader";
+  addCurrentDataUser,
+  addNewCard,
+  addCurrentUserId,
+} from '../../../features/currenUser/currentUserSlice';
 
 const MyAccount = ({
   handleSignOut,
-  myUserUid,
   isActivePreloader,
   setIsActivePreloader
 }) => {
 
-  const history = useHistory();
-  const userUid = history.location.pathname;
-  const cards =  useSelector((state) => state.cards.value);
+  const [isOpenPopupCreateCard, setIsOpenPopupCreateCard] = React.useState(false);
   
+  const history = useHistory();
   const dispatch = useDispatch();
 
-  const [isOpenPopupCreateCard, setIsOpenPopupCreateCard] = React.useState(false);
-
+  const userUid = history.location.pathname;
+  
+  const myUserUid = useSelector((state) => state.loggedInUser.value);
+  const cards =  useSelector((state) => state.currentUser.value).cards;
+  
+  
   const handleGetUserData = async (userUid) => {
     setIsActivePreloader(true);
     const dataUser = await api.getUserProfile(userUid);
-    dispatch(addDataUser(dataUser))
-    dispatch(addInitialCards(dataUser.cards));
+    dispatch(addCurrentDataUser(dataUser));
+    dispatch(addCurrentUserId(userUid));
     setIsActivePreloader(false);
   }
 
@@ -57,7 +55,7 @@ const MyAccount = ({
       textLocation,
       textDescription,
       cards,
-      myUserUid,
+      myUserUid: myUserUid,
     });
     dispatch(addNewCard(newCard));
     setIsOpenPopupCreateCard(false);  
@@ -78,17 +76,11 @@ const MyAccount = ({
             :
             <>
               <Header 
-                myUserUid={myUserUid}
-                userUid={userUid}
                 handleVisiblePopup={handleVisiblePopup}
                 handleSignOut={handleSignOut}
               />
-              <Profile 
-                userUid={userUid}
-              />
-              <CardList 
-                userUid={userUid}
-              />
+              <Profile />
+              <CardList />
             </>
             
           }

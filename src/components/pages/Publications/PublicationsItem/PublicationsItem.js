@@ -12,18 +12,18 @@ import * as api from '../../../../utils/api';
 
 const PublicationsItem = ({
   card,
-  userUid,
 }) => {
-
-  const user = useSelector((state) => state.user.value);
 
   const [likes, setLikes] = React.useState(card.likes);
 
+  const userId = useSelector((state) => state.currentUser.value).userId;
+  const user = useSelector((state) => state.currentUser.value);
+
+
   const handleLikeCard = async (card) => {
-    await api.updateNumberOfLikes(card, userUid, likes+1 );
+    await api.updateNumberOfLikes(card, userId, likes+1 );
     setLikes(likes+1);
   }
-
 
   return (
     <li className="publications__item-list" id={card._id}>

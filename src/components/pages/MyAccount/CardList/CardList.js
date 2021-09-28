@@ -3,11 +3,9 @@ import { useSelector } from "react-redux";
 import CardItem from './CardItem/CardItem';
 import './CardList.css'
 
-const CardList = ({
-  userUid,
-}) => {
+const CardList = () => {
 
-  const cards =  useSelector((state) => state.cards.value);
+  const cards =  useSelector((state) => state.currentUser.value).cards;
 
   return (
       <section className="photo-cards">
@@ -16,7 +14,6 @@ const CardList = ({
             <CardItem 
               key={item._id}
               card={item}
-              userUid={userUid}
             /> 
           )}
         </ul>

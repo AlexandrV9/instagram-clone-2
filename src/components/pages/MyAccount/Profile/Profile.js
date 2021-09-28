@@ -5,7 +5,7 @@ import './Profile.css';
 
 const Profile = () => {
   
-  const user = useSelector((state) => state.user.value);
+  const currentUser = useSelector((state) => state.currentUser.value);
   const history = useHistory();
 
   return (
@@ -13,7 +13,7 @@ const Profile = () => {
       <div className="profile__wrapper">
         
         <div className="profile__wrapper-image">
-          <img className="profile__avatar" src={user.avatar} alt="аватар пользователя"/>
+          <img className="profile__avatar" src={currentUser.avatar} alt="аватар пользователя"/>
         </div>
 
         <div className="profile__publications-followers-subscriptions">
@@ -37,7 +37,7 @@ const Profile = () => {
       </div>
 
       <div className="profile__info-about-me">
-        <h1 className="profile__name">{user.name}</h1>
+        <h1 className="profile__name">{currentUser.name}</h1>
         <p className="profile__signature">Moscow</p>
       </div>
 

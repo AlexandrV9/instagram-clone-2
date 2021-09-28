@@ -1,5 +1,7 @@
 import React from 'react';
 import { Route, Switch, useHistory } from 'react-router';
+import { useDispatch } from 'react-redux';
+
 import './App.css'
 
 import MyAccount from '../MyAccount/MyAccount';
@@ -9,52 +11,38 @@ import ProtectedRoute from '../../ProtectedRoute/ProtectedRoute';
 import PageNotFound from '../../pages/PageNotFound/PageNotFound';
 import Subscribers from '../Subscribers/Subscribers';
 import * as api from '../../../utils/api';
+import { addLoggedInUser } from '../../../features/loggedInUser/loggedInUserSlice';
+import { persistor } from '../../../store/store';
 
 function App() {
 
   const history = useHistory();
+  const dispatch = useDispatch();
 
-  const [myUserUid, setMyUserUid] = React.useState('');
   const [isActivePreloader, setIsActivePreloader ] = React.useState(false);
 
   const handleLogin = async ({ email, password }) => {
     const userId = await api.login({ email, password });
-    await setMyUserUid(userId);
-    await history.push(`/${userId}`);
+    dispatch(addLoggedInUser(userId));
+    history.push(`/${userId}`);
     setIsActivePreloader(true);
-    localStorage.setItem('userId', userId);
   }
 
-  const handleCheckUserId = () => {
-    const userId = localStorage.getItem('userId');
-    if(userId!== '' && userId!== null) {
-      setMyUserUid(userId);
-      history.push(`/${userId}`);
-    }
-  }
-
-  const handleSignOut = async () => {
+  const handleSignOut = () => {
+    persistor.purge();
     api.signOut();
-    setMyUserUid('');  
-    localStorage.removeItem('userId');
+    history.push('/signin');
   }
-
-  React.useEffect(() => {
-    handleCheckUserId();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  },[])
 
   return (
     <>
       <Switch>
 
         <ProtectedRoute path={`/publications/`}
-          myUserUid={myUserUid}
           component={Publications} 
         />
 
         <ProtectedRoute exact path="/subscribers"
-          myUserUid={myUserUid}
           component={Subscribers}
         />
 
@@ -67,7 +55,6 @@ function App() {
         <ProtectedRoute path="/:id"
           isActivePreloader={isActivePreloader}
           setIsActivePreloader={setIsActivePreloader}
-          myUserUid={myUserUid}
           handleSignOut={handleSignOut}
           component={MyAccount}
         />

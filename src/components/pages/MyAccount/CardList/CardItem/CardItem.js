@@ -5,13 +5,12 @@ import './CardItem.css';
 
 const CardItem = ({ 
   card, 
-  userUid,
 }) => {
 
   const history = useHistory();
 
   const handleOpenImage = () => {
-    history.push(`/publications/#${card._id}`, { userUid });
+    history.push(`/publications/#${card._id}`);
   }
 
   return (

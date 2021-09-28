@@ -16,12 +16,14 @@
   box-sizing: border-box;
   width: 100%;
   padding: 5px;
+  border-radius: 5px;
+  border: 1px solid rgba(190, 190, 190, 0.5);
 }
 
 .login__input-wrapper {
   border-radius: 20px;
   position: relative;
-  margin-bottom: 20px;
+  margin-bottom: 25px;
 }
 
 .login__input-wrapper:last-of-type {
@@ -60,4 +62,6 @@
 .login__button {
   padding: 5px;
   width: 100%;
+  border-radius: 5px;
+  border: 1px solid rgba(190, 190, 190, 0.5);
 }
