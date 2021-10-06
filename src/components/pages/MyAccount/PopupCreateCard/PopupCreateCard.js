@@ -33,7 +33,6 @@ const PopupCreateCard = ({
         <h1 className="popup__title">Добавить новое фото</h1>
 
         <form 
-          name="" 
           className="popup__form popup__form_type_create-card"
           onSubmit={handleSubmit}
           noValidate
@@ -66,7 +65,7 @@ const PopupCreateCard = ({
             value={textDescription}
             name="text-description"
             className="popup__input popup__input_type_description"
-            placeholder="Описание к картинки"
+            placeholder="Описание к картинке"
             onChange={handleChangeTextDescription}
           />
 

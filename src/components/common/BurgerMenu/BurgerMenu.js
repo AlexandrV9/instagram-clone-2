@@ -31,7 +31,7 @@ const BurgerMenu = ({
         <img className="navigation__burger-image" alt="Иконка меню" src={pathIconMenu}/>
       </button>
         
-      <div className={`navigation__navbar ${isVisible ? 'navigation__navbar_active' : ''}`} onClick={handleVisibleMenu}>
+      <div className={`navigation ${isVisible ? 'navigation_active' : ''}`} onClick={handleVisibleMenu}>
   
         <nav className={`navigation__menu ${isVisible ? 'navigation__menu_active' : ''}`} onClick={event => event.stopPropagation()}>
           <ul className="navigation__menu-unordered-list">

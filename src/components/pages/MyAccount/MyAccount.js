@@ -58,7 +58,7 @@ const MyAccount = ({
       myUserUid: myUserUid,
     });
     dispatch(addNewCard(newCard));
-    setIsOpenPopupCreateCard(false);  
+    setIsOpenPopupCreateCard(false);
   }
 
   React.useEffect(() => {

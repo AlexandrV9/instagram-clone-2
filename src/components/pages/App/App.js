@@ -1,6 +1,6 @@
 import React from 'react';
 import { Route, Switch, useHistory } from 'react-router';
-import { useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 
 import './App.css'
 
@@ -18,6 +18,7 @@ function App() {
 
   const history = useHistory();
   const dispatch = useDispatch();
+  const myUserUid = useSelector((state) => state.loggedInUser.value);
 
   const [isActivePreloader, setIsActivePreloader ] = React.useState(false);
 
@@ -34,6 +35,18 @@ function App() {
     history.push('/signin');
   }
 
+  const checkToken =() => {
+    if(myUserUid !== ''){
+      history.push(`/${myUserUid}`);
+    } else {
+      history.push('/signin');
+    }
+  }
+
+  React.useEffect(() => {
+    checkToken();
+  },[]);
+
   return (
     <>
       <Switch>
@@ -42,7 +55,7 @@ function App() {
           component={Publications} 
         />
 
-        <ProtectedRoute exact path="/subscribers"
+        <ProtectedRoute  path="/subscribers"
           component={Subscribers}
         />
 
@@ -52,16 +65,16 @@ function App() {
           />
         </Route>
 
-        <ProtectedRoute path="/:id"
+        <ProtectedRoute exact path="/:id"
           isActivePreloader={isActivePreloader}
           setIsActivePreloader={setIsActivePreloader}
           handleSignOut={handleSignOut}
           component={MyAccount}
         />
 
-        <ProtectedRoute path="*"
-          component={PageNotFound}
-        />
+        <Route path="*">
+          <PageNotFound />
+        </Route >
 
       </Switch>
 
